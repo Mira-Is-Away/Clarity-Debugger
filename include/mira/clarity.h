@@ -143,7 +143,7 @@ void clarity_log_output(const char *prefix, int is_warning, const char *msg, ...
     printf("[%s] \033[0m", prefix);
 
     va_list args;
-    va_start(args);
+    va_start(args, msg);
     vprintf(msg, args);
     va_end(args);
     printf("\n");
