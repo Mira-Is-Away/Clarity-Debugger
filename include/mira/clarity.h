@@ -3,6 +3,7 @@
 
 #include <stdio.h>
 #include <stdlib.h>
+#include <stdbool.h>
 
 /*
 Bypass macro definitions if application is not being compiled in
@@ -58,8 +59,16 @@ void clarity_mem_report(void);
 
 #include <stdarg.h>
 
-#define CLARITY_MEM_MAGIC 0xDEADFACE
+#define CLARITY_MEM_MAGIC 0xDEADBEEF
 
+/**
+ * @struct ClarityMemoryHeader
+ * 
+ * A header struct that preceeds any memory allocated by
+ * clarity_malloc() and holds debug metainfo regarding
+ * said memory block (in particular, the file, line and
+ * function from whence that memory block was allocated)
+ */
 typedef struct ClarityMemoryHeader {
     size_t size;
     int line;
