@@ -104,7 +104,12 @@ void* clarity_malloc(size_t size, const char *file, int line) {
     return (void*)(header + 1);
 }
 
-inline void clarity_free(void* ptr, const char *file, int line, const char* func) {
+void clarity_free(void* ptr, const char *file, int line, const char* func) {
+    if (ptr == NULL) {
+        CLARITY_LOG_WARN("Attempted to free NULL pointer at %s:%d (%s)",
+                         file, line, func);
+    }
+
     ClarityMemoryHeader *header = ((ClarityMemoryHeader*)ptr) - 1;
 
     if (header->magic != CLARITY_MEM_MAGIC) {
