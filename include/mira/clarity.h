@@ -39,7 +39,7 @@ debug mode.
         } \
     } while (0)
 
-#define CLARITY_MALLOC(size) clarity_malloc(size, __FILE__, __LINE__);
+#define CLARITY_MALLOC(size) clarity_malloc(size, __FILE__, __LINE__, __func__);
 
 #define CLARITY_FREE(ptr) \
     clarity_free(ptr, __FILE__, __LINE__, __func__);
@@ -51,7 +51,7 @@ void clarity_assert_failed(const char *expr, const char *file, int line,
                            const char *func, const char *msg, ...);
 
 typedef struct ClarityMemoryHeader ClarityMemoryHeader;
-void* clarity_malloc(size_t size, const char *file, int line);
+void* clarity_malloc(size_t size, const char *file, int line, const char *func);
 void clarity_free(void* ptr, const char *file, int line, const char* func);
 void clarity_mem_report(void);
 
@@ -81,11 +81,15 @@ typedef struct ClarityMemoryHeader {
 static ClarityMemoryHeader *g_clarity_alloc_head = NULL;
 static size_t g_clarity_alloc_amount_bytes = 0;
 
-void* clarity_malloc(size_t size, const char *file, int line) {
+void* clarity_malloc(size_t size, const char *file, int line, const char *func) {
     size_t final_size = size + sizeof(ClarityMemoryHeader);
     ClarityMemoryHeader *header = (ClarityMemoryHeader*) malloc(final_size);
 
-    if (!header) return NULL;
+    if (!header) {
+        CLARITY_LOG_WARN("Failed to allocate memory at %s:%d (%s)",
+                         file, line, func);
+        return NULL;
+    }
 
     header->size = size;
     header->file = file;
@@ -104,10 +108,11 @@ void* clarity_malloc(size_t size, const char *file, int line) {
     return (void*)(header + 1);
 }
 
-void clarity_free(void* ptr, const char *file, int line, const char* func) {
+void clarity_free(void* ptr, const char *file, int line, const char *func) {
     if (ptr == NULL) {
         CLARITY_LOG_WARN("Attempted to free NULL pointer at %s:%d (%s)",
                          file, line, func);
+        return;
     }
 
     ClarityMemoryHeader *header = ((ClarityMemoryHeader*)ptr) - 1;
