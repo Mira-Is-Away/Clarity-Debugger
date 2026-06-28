@@ -28,7 +28,7 @@ debug mode.
     clarity_log_output("INFO", false, msg, ##__VA_ARGS__)
 
 #define CLARITY_LOG_WARN(msg, ...) \
-    clarity_log_output("WARN", true, __func__, msg, ##__VA_ARGS__)
+    clarity_log_output("WARN", true, msg, ##__VA_ARGS__)
 
 #define CLARITY_ASSERT(condition, msg, ...) \
     do { \
@@ -46,7 +46,7 @@ debug mode.
 
 #define CLARITY_MEM_REPORT() clarity_mem_report();
 
-void clarity_log_output(const char *prefix, int is_warning, const char *func, const char *msg, ...);
+void clarity_log_output(const char *prefix, int is_warning, const char *msg, ...);
 void clarity_assert_failed(const char *expr, const char *file, int line,
                            const char *func, const char *msg, ...);
 
@@ -152,7 +152,7 @@ void clarity_mem_report(void) {
     }
 }
 
-void clarity_log_output(const char *prefix, int is_warning, const char *func, const char *msg, ...) {
+void clarity_log_output(const char *prefix, int is_warning, const char *msg, ...) {
     if (is_warning) {
         printf("\033[0;33m");
     } else {
@@ -165,7 +165,7 @@ void clarity_log_output(const char *prefix, int is_warning, const char *func, co
     va_start(args, msg);
     vprintf(msg, args);
     va_end(args);
-    printf(" (%s)\n", func);
+    printf("\n");
 }
 
 void clarity_assert_failed(const char *expr, const char *file, int line,
