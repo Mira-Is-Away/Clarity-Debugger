@@ -1,0 +1,6 @@
+# Visual Studio clutter
+out/
+.vs
+
+# test directories
+tests/
