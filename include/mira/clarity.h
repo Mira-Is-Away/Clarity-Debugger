@@ -12,6 +12,7 @@ debug mode.
 #ifndef MIRA_CLARITY_DEBUG
     #define CLARITY_LOG_INFO(msg, ...)
     #define CLARITY_LOG_WARN(msg, ...)
+    #define CLARITY_LOG_ERROR(msg, ...)
     #define CLARITY_ASSERT(condition, msg, ...)
     #define CLARITY_MALLOC(size) malloc(size)
     #define CLARITY_FREE(ptr) free(ptr);
@@ -30,6 +31,9 @@ debug mode.
 #define CLARITY_LOG_WARN(msg, ...) \
     clarity_log_output("WARN", true, msg, ##__VA_ARGS__)
 
+#define CLARITY_LOG_ERROR(msg, ...) \
+    clarity_log_error(msg, ##__VA_ARGS__)
+
 #define CLARITY_ASSERT(condition, msg, ...) \
     do { \
         if (!(condition)) { \
@@ -47,6 +51,7 @@ debug mode.
 #define CLARITY_MEM_REPORT() clarity_mem_report();
 
 void clarity_log_output(const char *prefix, int is_warning, const char *msg, ...);
+void clarity_log_error(const char* msg, ...);
 void clarity_assert_failed(const char *expr, const char *file, int line,
                            const char *func, const char *msg, ...);
 
@@ -150,6 +155,17 @@ void clarity_mem_report(void) {
                 cur->line);
         cur = cur->next;
     }
+}
+
+void clarity_log_error(const char* msg, ...) {
+
+    printf("\033[0;31m[ERROR] \033[0m");
+
+    va_list args;
+    va_start(args, msg);
+    vprintf(msg, args);
+    va_end(args);
+    printf("\n");
 }
 
 void clarity_log_output(const char *prefix, int is_warning, const char *msg, ...) {
