@@ -10,10 +10,10 @@ Bypass macro definitions if application is not being compiled in
 debug mode.
 */
 #ifndef MIRA_CLARITY_DEBUG
-    #define CLARITY_LOG_INFO(msg, ...)
-    #define CLARITY_LOG_WARN(msg, ...)
-    #define CLARITY_LOG_ERROR(msg, ...)
-    #define CLARITY_ASSERT(condition, msg, ...)
+    #define CLARITY_LOG_INFO(...)
+    #define CLARITY_LOG_WARN(...)
+    #define CLARITY_LOG_ERROR(...)
+    #define CLARITY_ASSERT(condition, ...)
     #define CLARITY_MALLOC(size) malloc(size)
     #define CLARITY_FREE(ptr) free(ptr);
     #define CLARITY_MEM_REPORT()
@@ -25,20 +25,20 @@ debug mode.
     #define CLARITY_TRAP() __builtin_trap()
 #endif
 
-#define CLARITY_LOG_INFO(msg, ...) \
-    clarity_log_output("INFO", false, msg, ##__VA_ARGS__)
+#define CLARITY_LOG_INFO(...) \
+    clarity_log_output("INFO", false, __VA_ARGS__)
 
-#define CLARITY_LOG_WARN(msg, ...) \
-    clarity_log_output("WARN", true, msg, ##__VA_ARGS__)
+#define CLARITY_LOG_WARN(...) \
+    clarity_log_output("WARN", true, __VA_ARGS__)
 
-#define CLARITY_LOG_ERROR(msg, ...) \
-    clarity_log_error(msg, ##__VA_ARGS__)
+#define CLARITY_LOG_ERROR(...) \
+    clarity_log_error(__VA_ARGS__)
 
-#define CLARITY_ASSERT(condition, msg, ...) \
+#define CLARITY_ASSERT(condition, ...) \
     do { \
         if (!(condition)) { \
             clarity_assert_failed(#condition, __FILE__, __LINE__, __func__, \
-                                  msg, ##__VA_ARGS__); \
+                                  __VA_ARGS__); \
             CLARITY_TRAP(); \
         } \
     } while (0)
