@@ -1,10 +1,6 @@
 #ifndef MIRA_CLARITY_H_
 #define MIRA_CLARITY_H_
 
-#include <stdio.h>
-#include <stdlib.h>
-#include <stdbool.h>
-
 /*
 Bypass macro definitions if application is not being compiled in
 debug mode.
@@ -62,6 +58,9 @@ void clarity_mem_report(void);
 
 #ifdef MIRA_CLARITY_IMPL
 
+#include <stdio.h>
+#include <stdlib.h>
+#include <stdbool.h>
 #include <stdarg.h>
 
 #define CLARITY_MEM_MAGIC 0xDEADBEEF
@@ -86,7 +85,7 @@ typedef struct ClarityMemoryHeader {
 static ClarityMemoryHeader *g_clarity_alloc_head = NULL;
 static size_t g_clarity_alloc_amount_bytes = 0;
 
-void* clarity_malloc(size_t size, const char *file, int line, const char *func) {
+void *clarity_malloc(size_t size, const char *file, int line, const char *func) {
     size_t final_size = size + sizeof(ClarityMemoryHeader);
     ClarityMemoryHeader *header = (ClarityMemoryHeader*) malloc(final_size);
 
