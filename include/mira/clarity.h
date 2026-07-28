@@ -1,6 +1,11 @@
 #ifndef MIRA_CLARITY_H_
 #define MIRA_CLARITY_H_
 
+#include <stdio.h>
+#include <stdlib.h>
+#include <stdbool.h>
+#include <stdarg.h>
+
 /**
  * ============================================================================
  * CLARITY DEBUGGING LIBRARY (clarity.h)
@@ -170,11 +175,6 @@ void clarity_mem_report(void);
  * Included only when MIRA_CLARITY_IMPL is defined prior to including clarity.h
  * ============================================================================ */
 #ifdef MIRA_CLARITY_IMPL
-
-#include <stdio.h>
-#include <stdlib.h>
-#include <stdbool.h>
-#include <stdarg.h>
 
 /*
  * --- CONCEPT 6: Magic Numbers & Defensive Programming ---
