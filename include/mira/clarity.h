@@ -1,6 +1,10 @@
 #ifndef MIRA_CLARITY_H_
 #define MIRA_CLARITY_H_
 
+#include <stdio.h>
+#include <stdlib.h>
+#include <stdbool.h>
+#include <stdarg.h>
 /**
  * ============================================================================
  * CLARITY DEBUGGING LIBRARY (clarity.h)
@@ -175,7 +179,6 @@ void clarity_mem_report(void);
 #include <stdlib.h>
 #include <stdbool.h>
 #include <stdarg.h>
-
 /*
  * --- CONCEPT 6: Magic Numbers & Defensive Programming ---
  * A "magic number" is a hardcoded hexadecimal constant placed in memory structures.
